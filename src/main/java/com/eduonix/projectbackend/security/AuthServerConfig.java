@@ -41,7 +41,8 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 			
 			HttpServletRequest req = (HttpServletRequest) request;
 			HttpServletResponse res = (HttpServletResponse) response;
-			
+
+
 			res.setHeader("Access-Control-Allow-Origin", "https://sandeepsachdev.github.io/");
 			res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
 			res.setHeader("Access-Control-Max-Age", "3600");
