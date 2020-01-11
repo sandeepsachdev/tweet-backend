@@ -23,19 +23,6 @@ public class TweetService {
         Twitter twitter = tf.getInstance();
 
 
-        /* */
-
-          twitter = new TwitterFactory().getInstance();
-        twitter.setOAuthConsumer("1a1RraLuc9LGEFVGY1BXsdnbH", "lqvHK39MKefudwWDRzG9zxNEperrKlKTXjdLW7pmxwnW04d92S");
-        twitter.setOAuthAccessToken(new AccessToken(
-                "10673082-DdKpQWygwLF93l6ZZ9kC62SIGNqzIaJZ0b8jxfkSs",
-                "PoHWx3Ady0KpwmsXxASByxqgIzAl0NzZAWV58n19TIm0D"));
-
-        /* */
-
-
-
-
         User user = null;
         try {
             user = twitter.verifyCredentials();
