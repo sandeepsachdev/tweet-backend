@@ -4,9 +4,11 @@ public class Tweet {
 
     String time;
     String user;
+    String userLink;
     String screenName;
     String userImage;
     String text;
+    String textLink;
 
     public String getTime() {
         return time;
@@ -46,5 +48,21 @@ public class Tweet {
 
     public void setScreenName(String screenName) {
         this.screenName = screenName;
+    }
+
+    public String getUserLink() {
+        return userLink;
+    }
+
+    public void setUserLink(String userLink) {
+        this.userLink = userLink;
+    }
+
+    public String getTextLink() {
+        return textLink;
+    }
+
+    public void setTextLink(String textLink) {
+        this.textLink = textLink;
     }
 }

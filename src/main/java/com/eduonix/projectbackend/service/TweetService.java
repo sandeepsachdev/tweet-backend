@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import twitter4j.*;
 import twitter4j.auth.AccessToken;
 import twitter4j.conf.ConfigurationBuilder;
-
+import com.twitter.twittertext.Autolink;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +21,18 @@ public class TweetService {
 
         TwitterFactory tf = new TwitterFactory(cb.build());
         Twitter twitter = tf.getInstance();
+
+
+        /* */
+
+          twitter = new TwitterFactory().getInstance();
+        twitter.setOAuthConsumer("1a1RraLuc9LGEFVGY1BXsdnbH", "lqvHK39MKefudwWDRzG9zxNEperrKlKTXjdLW7pmxwnW04d92S");
+        twitter.setOAuthAccessToken(new AccessToken(
+                "10673082-DdKpQWygwLF93l6ZZ9kC62SIGNqzIaJZ0b8jxfkSs",
+                "PoHWx3Ady0KpwmsXxASByxqgIzAl0NzZAWV58n19TIm0D"));
+
+        /* */
+
 
 
 
@@ -48,13 +60,20 @@ public class TweetService {
         List<Status> statuses;// Get last 100 tweets
         statuses = twitter.getHomeTimeline();
 
+        Autolink autolink = new Autolink();
+        autolink.setUrlTarget("_");
+
         SimpleDateFormat sdf = getSimpleDateFormat();
         for (Status status : statuses) {
             Tweet tweet = new Tweet();
             tweet.setTime(sdf.format(status.getCreatedAt()));
             tweet.setUser(status.getUser().getName());
+            tweet.setUserLink(autolink.autoLink('@' + status.getUser().getScreenName() +
+                    " (" + status.getUser().getName() + ")"));
+
             tweet.setScreenName(status.getUser().getScreenName());
             tweet.setText(status.getText());
+            tweet.setTextLink(autolink.autoLink(status.getText()));
             tweets.add(tweet);
         }
     }
