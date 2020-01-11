@@ -46,10 +46,10 @@ public class TweetService {
     private void convert(Twitter twitter, List<Tweet> tweets) throws TwitterException {
         List<Status> statuses;// Get last 100 tweets
         statuses = twitter.getHomeTimeline();
-        statuses.addAll(twitter.getHomeTimeline());
-        statuses.addAll(twitter.getHomeTimeline());
-        statuses.addAll(twitter.getHomeTimeline());
-        statuses.addAll(twitter.getHomeTimeline());
+        statuses.addAll(twitter.getHomeTimeline(new Paging(2)));
+        statuses.addAll(twitter.getHomeTimeline(new Paging(3)));
+        statuses.addAll(twitter.getHomeTimeline(new Paging(4)));
+        statuses.addAll(twitter.getHomeTimeline(new Paging(5)));
 
         Autolink autolink = new Autolink();
         autolink.setUrlTarget("_");
