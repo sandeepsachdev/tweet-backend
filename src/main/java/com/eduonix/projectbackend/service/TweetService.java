@@ -1,6 +1,7 @@
 package com.eduonix.projectbackend.service;
 
 import com.eduonix.projectbackend.model.Tweet;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import twitter4j.*;
 import twitter4j.auth.AccessToken;
@@ -14,8 +15,10 @@ import java.util.TimeZone;
 @Component
 public class TweetService {
 
+    @Cacheable("tweets")
     public List<Tweet> getTweets() {
 
+        System.out.println("Retrieving tweets");
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true).setTweetModeExtended(true);
 
@@ -46,10 +49,10 @@ public class TweetService {
     private void convert(Twitter twitter, List<Tweet> tweets) throws TwitterException {
         List<Status> statuses;// Get last 100 tweets
         statuses = twitter.getHomeTimeline();
-//        statuses.addAll(twitter.getHomeTimeline(new Paging(2)));
-//        statuses.addAll(twitter.getHomeTimeline(new Paging(3)));
-//        statuses.addAll(twitter.getHomeTimeline(new Paging(4)));
-//        statuses.addAll(twitter.getHomeTimeline(new Paging(5)));
+        statuses.addAll(twitter.getHomeTimeline(new Paging(2)));
+        statuses.addAll(twitter.getHomeTimeline(new Paging(3)));
+        statuses.addAll(twitter.getHomeTimeline(new Paging(4)));
+        statuses.addAll(twitter.getHomeTimeline(new Paging(5)));
 
         Autolink autolink = new Autolink();
         autolink.setUrlTarget("_");
