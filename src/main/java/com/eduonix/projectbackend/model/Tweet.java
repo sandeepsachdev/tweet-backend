@@ -9,6 +9,10 @@ public class Tweet {
     String userImage;
     String text;
     String textLink;
+    String image;
+    String imageType;
+    String expandedUrl;
+    String displayUrl;
 
     public String getTime() {
         return time;
@@ -65,4 +69,37 @@ public class Tweet {
     public void setTextLink(String textLink) {
         this.textLink = textLink;
     }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getImageType() {
+        return imageType;
+    }
+
+    public void setImageType(String imageType) {
+        this.imageType = imageType;
+    }
+
+    public String getExpandedUrl() {
+        return expandedUrl;
+    }
+
+    public void setExpandedUrl(String expandedUrl) {
+        this.expandedUrl = expandedUrl;
+    }
+
+    public String getDisplayUrl() {
+        return displayUrl;
+    }
+
+    public void setDisplayUrl(String displayUrl) {
+        this.displayUrl = displayUrl;
+    }
+
 }

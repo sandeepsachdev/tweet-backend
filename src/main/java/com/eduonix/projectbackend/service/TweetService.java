@@ -1,12 +1,12 @@
 package com.eduonix.projectbackend.service;
 
 import com.eduonix.projectbackend.model.Tweet;
+import com.twitter.twittertext.Autolink;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import twitter4j.*;
-import twitter4j.auth.AccessToken;
 import twitter4j.conf.ConfigurationBuilder;
-import com.twitter.twittertext.Autolink;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,8 +66,43 @@ public class TweetService {
                     " (" + status.getUser().getName() + ")"));
 
             tweet.setScreenName(status.getUser().getScreenName());
-            tweet.setText(status.getText());
-            tweet.setTextLink(autolink.autoLink(status.getText()));
+
+            Status sourceStatus = null;
+            String sourceStatusDescription = "";
+
+            if (status.getRetweetedStatus() != null) {
+                sourceStatus = status.getRetweetedStatus();
+                sourceStatusDescription = "Retweet:";
+
+            } else if (status.getQuotedStatus() != null) {
+                sourceStatus = status.getQuotedStatus();
+                sourceStatusDescription = "Quote:";
+            } else {
+                sourceStatus = status;
+                sourceStatusDescription = "";
+            }
+
+            tweet.setText(sourceStatusDescription + sourceStatus.getText());
+            if ((sourceStatus.getMediaEntities() != null) && (sourceStatus.getMediaEntities().length >= 1)) {
+                System.out.println(sourceStatusDescription + "Image");
+                System.out.println(sourceStatus.getMediaEntities()[0].getMediaURL());
+                System.out.println(sourceStatus.getMediaEntities()[0].getType());
+
+                tweet.setImage(sourceStatus.getMediaEntities()[0].getMediaURL());
+                tweet.setImageType(sourceStatus.getMediaEntities()[0].getType());
+            }
+
+            if ((sourceStatus.getURLEntities() != null) && (sourceStatus.getURLEntities().length >= 1)) {
+                System.out.println(sourceStatusDescription + "Url");
+                System.out.println(sourceStatus.getURLEntities()[0].getDisplayURL());
+                System.out.println(sourceStatus.getURLEntities()[0].getExpandedURL());
+
+                tweet.setDisplayUrl(sourceStatus.getURLEntities()[0].getDisplayURL());
+                tweet.setExpandedUrl(sourceStatus.getURLEntities()[0].getExpandedURL());
+
+            }
+
+            tweet.setTextLink(autolink.autoLink(sourceStatus.getText()));
             tweets.add(tweet);
         }
     }
