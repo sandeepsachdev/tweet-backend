@@ -18,13 +18,10 @@ public class TweetService {
     @Cacheable("tweets")
     public List<Tweet> getTweets() {
 
-        System.out.println("Retrieving tweets");
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true).setTweetModeExtended(true);
-
         TwitterFactory tf = new TwitterFactory(cb.build());
         Twitter twitter = tf.getInstance();
-
 
         User user = null;
         try {
@@ -33,12 +30,9 @@ public class TweetService {
             e.printStackTrace();
         }
 
-        System.out.println(user.getRateLimitStatus());
-
-
-        List<Tweet>  tweets= new ArrayList<>();
+        List<Tweet> tweets;
         try {
-            convert(twitter, tweets);
+            tweets = retrieveTweets(twitter);
         } catch (TwitterException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -46,65 +40,77 @@ public class TweetService {
         return tweets;
     }
 
-    private void convert(Twitter twitter, List<Tweet> tweets) throws TwitterException {
+    private List<Tweet>  retrieveTweets(Twitter twitter) throws TwitterException {
+
+        List<Tweet> tweets = new ArrayList<>();
         List<Status> statuses;// Get last 100 tweets
+        statuses = getStatuses(twitter);
+        Autolink autolink = new Autolink();
+        autolink.setUrlTarget("_");
+        SimpleDateFormat sdf = getSimpleDateFormat();
+        for (Status status : statuses) {
+            Tweet tweet = populateTweet(autolink, sdf, status);
+            tweets.add(tweet);
+        }
+        return tweets;
+    }
+
+    private Tweet populateTweet(Autolink autolink, SimpleDateFormat sdf, Status status) {
+        Tweet tweet = new Tweet();
+        tweet.setTime(sdf.format(status.getCreatedAt()));
+        tweet.setUser(status.getUser().getName());
+        tweet.setUserLink(autolink.autoLink('@' + status.getUser().getScreenName() +
+                " (" + status.getUser().getName() + ")"));
+
+        tweet.setScreenName(status.getUser().getScreenName());
+
+        Status sourceStatus = null;
+        String sourceStatusDescription = "";
+
+        if (status.getRetweetedStatus() != null) {
+            sourceStatus = status.getRetweetedStatus();
+            sourceStatusDescription = "Retweet:";
+
+        } else if (status.getQuotedStatus() != null) {
+            sourceStatus = status.getQuotedStatus();
+            sourceStatusDescription = "Quote:";
+        } else {
+            sourceStatus = status;
+            sourceStatusDescription = "";
+        }
+
+        tweet.setText(sourceStatusDescription + sourceStatus.getText());
+        if ((sourceStatus.getMediaEntities() != null) && (sourceStatus.getMediaEntities().length >= 1)) {
+            System.out.println(sourceStatusDescription + "Image");
+            System.out.println(sourceStatus.getMediaEntities()[0].getMediaURL());
+            System.out.println(sourceStatus.getMediaEntities()[0].getType());
+
+            tweet.setImage(sourceStatus.getMediaEntities()[0].getMediaURL());
+            tweet.setImageType(sourceStatus.getMediaEntities()[0].getType());
+        }
+
+        if ((sourceStatus.getURLEntities() != null) && (sourceStatus.getURLEntities().length >= 1)) {
+            System.out.println(sourceStatusDescription + "Url");
+            System.out.println(sourceStatus.getURLEntities()[0].getDisplayURL());
+            System.out.println(sourceStatus.getURLEntities()[0].getExpandedURL());
+
+            tweet.setDisplayUrl(sourceStatus.getURLEntities()[0].getDisplayURL());
+            tweet.setExpandedUrl(sourceStatus.getURLEntities()[0].getExpandedURL());
+
+        }
+
+        tweet.setTextLink(autolink.autoLink(tweet.getText()));
+        return tweet;
+    }
+
+    private List<Status> getStatuses(Twitter twitter) throws TwitterException {
+        List<Status> statuses;
         statuses = twitter.getHomeTimeline();
         statuses.addAll(twitter.getHomeTimeline(new Paging(2)));
         statuses.addAll(twitter.getHomeTimeline(new Paging(3)));
         statuses.addAll(twitter.getHomeTimeline(new Paging(4)));
         statuses.addAll(twitter.getHomeTimeline(new Paging(5)));
-
-        Autolink autolink = new Autolink();
-        autolink.setUrlTarget("_");
-
-        SimpleDateFormat sdf = getSimpleDateFormat();
-        for (Status status : statuses) {
-            Tweet tweet = new Tweet();
-            tweet.setTime(sdf.format(status.getCreatedAt()));
-            tweet.setUser(status.getUser().getName());
-            tweet.setUserLink(autolink.autoLink('@' + status.getUser().getScreenName() +
-                    " (" + status.getUser().getName() + ")"));
-
-            tweet.setScreenName(status.getUser().getScreenName());
-
-            Status sourceStatus = null;
-            String sourceStatusDescription = "";
-
-            if (status.getRetweetedStatus() != null) {
-                sourceStatus = status.getRetweetedStatus();
-                sourceStatusDescription = "Retweet:";
-
-            } else if (status.getQuotedStatus() != null) {
-                sourceStatus = status.getQuotedStatus();
-                sourceStatusDescription = "Quote:";
-            } else {
-                sourceStatus = status;
-                sourceStatusDescription = "";
-            }
-
-            tweet.setText(sourceStatusDescription + sourceStatus.getText());
-            if ((sourceStatus.getMediaEntities() != null) && (sourceStatus.getMediaEntities().length >= 1)) {
-                System.out.println(sourceStatusDescription + "Image");
-                System.out.println(sourceStatus.getMediaEntities()[0].getMediaURL());
-                System.out.println(sourceStatus.getMediaEntities()[0].getType());
-
-                tweet.setImage(sourceStatus.getMediaEntities()[0].getMediaURL());
-                tweet.setImageType(sourceStatus.getMediaEntities()[0].getType());
-            }
-
-            if ((sourceStatus.getURLEntities() != null) && (sourceStatus.getURLEntities().length >= 1)) {
-                System.out.println(sourceStatusDescription + "Url");
-                System.out.println(sourceStatus.getURLEntities()[0].getDisplayURL());
-                System.out.println(sourceStatus.getURLEntities()[0].getExpandedURL());
-
-                tweet.setDisplayUrl(sourceStatus.getURLEntities()[0].getDisplayURL());
-                tweet.setExpandedUrl(sourceStatus.getURLEntities()[0].getExpandedURL());
-
-            }
-
-            tweet.setTextLink(autolink.autoLink(sourceStatus.getText()));
-            tweets.add(tweet);
-        }
+        return statuses;
     }
 
     private SimpleDateFormat getSimpleDateFormat() {
