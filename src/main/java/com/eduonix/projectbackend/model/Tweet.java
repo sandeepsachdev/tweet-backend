@@ -13,6 +13,9 @@ public class Tweet {
     String imageType;
     String expandedUrl;
     String displayUrl;
+    String quotedBy;
+    String quotedText;
+    String retweetedBy;
 
     public String getTime() {
         return time;
@@ -102,4 +105,27 @@ public class Tweet {
         this.displayUrl = displayUrl;
     }
 
+    public String getQuotedBy() {
+        return quotedBy;
+    }
+
+    public void setQuotedBy(String quotedBy) {
+        this.quotedBy = quotedBy;
+    }
+
+    public String getQuotedText() {
+        return quotedText;
+    }
+
+    public void setQuotedText(String quotedText) {
+        this.quotedText = quotedText;
+    }
+
+    public String getRetweetedBy() {
+        return retweetedBy;
+    }
+
+    public void setRetweetedBy(String retweetedBy) {
+        this.retweetedBy = retweetedBy;
+    }
 }

@@ -63,36 +63,46 @@ public class TweetService {
                 " (" + status.getUser().getName() + ")"));
 
         tweet.setScreenName(status.getUser().getScreenName());
+        //System.out.println(status);
 
         Status sourceStatus = null;
-        String sourceStatusDescription = "";
+
 
         if (status.getRetweetedStatus() != null) {
             sourceStatus = status.getRetweetedStatus();
-            sourceStatusDescription = "Retweet:";
+            tweet.setRetweetedBy(autolink.autoLink('@' + status.getUser().getScreenName()
+                   ) + " Retweeted");
+            tweet.setUser(sourceStatus.getUser().getName());
+            tweet.setUserLink(autolink.autoLink('@' + sourceStatus.getUser().getScreenName() +
+                    " (" + sourceStatus.getUser().getName() + ")"));
 
         } else if (status.getQuotedStatus() != null) {
             sourceStatus = status.getQuotedStatus();
-            sourceStatusDescription = "Quote:";
+            tweet.setQuotedText(autolink.autoLink(status.getText()));
+            tweet.setQuotedBy(autolink.autoLink('@' + status.getUser().getScreenName() +
+                    " (" + status.getUser().getName() + ")") + " Quoted");
+            tweet.setUser(sourceStatus.getUser().getName());
+            tweet.setUserLink(autolink.autoLink('@' + sourceStatus.getUser().getScreenName() +
+                    " (" + sourceStatus.getUser().getName() + ")"));
+
         } else {
             sourceStatus = status;
-            sourceStatusDescription = "";
         }
 
-        tweet.setText(sourceStatusDescription + sourceStatus.getText());
+        tweet.setText(sourceStatus.getText());
         if ((sourceStatus.getMediaEntities() != null) && (sourceStatus.getMediaEntities().length >= 1)) {
-            System.out.println(sourceStatusDescription + "Image");
-            System.out.println(sourceStatus.getMediaEntities()[0].getMediaURL());
-            System.out.println(sourceStatus.getMediaEntities()[0].getType());
+//            System.out.println(sourceStatusDescription + "Image");
+//            System.out.println(sourceStatus.getMediaEntities()[0].getMediaURL());
+//            System.out.println(sourceStatus.getMediaEntities()[0].getType());
 
             tweet.setImage(sourceStatus.getMediaEntities()[0].getMediaURL());
             tweet.setImageType(sourceStatus.getMediaEntities()[0].getType());
         }
 
         if ((sourceStatus.getURLEntities() != null) && (sourceStatus.getURLEntities().length >= 1)) {
-            System.out.println(sourceStatusDescription + "Url");
-            System.out.println(sourceStatus.getURLEntities()[0].getDisplayURL());
-            System.out.println(sourceStatus.getURLEntities()[0].getExpandedURL());
+//            System.out.println(sourceStatusDescription + "Url");
+//            System.out.println(sourceStatus.getURLEntities()[0].getDisplayURL());
+//            System.out.println(sourceStatus.getURLEntities()[0].getExpandedURL());
 
             tweet.setDisplayUrl(sourceStatus.getURLEntities()[0].getDisplayURL());
             tweet.setExpandedUrl(sourceStatus.getURLEntities()[0].getExpandedURL());
