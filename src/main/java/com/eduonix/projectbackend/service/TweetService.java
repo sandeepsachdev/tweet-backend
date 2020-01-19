@@ -70,8 +70,7 @@ public class TweetService {
 
         if (status.getRetweetedStatus() != null) {
             sourceStatus = status.getRetweetedStatus();
-            tweet.setRetweetedBy(autolink.autoLink('@' + status.getUser().getScreenName()
-                   ) + " Retweeted");
+            tweet.setRetweetedBy(autolink.autoLink('@' + status.getUser().getScreenName()) + " Retweeted");
             tweet.setUser(sourceStatus.getUser().getName());
             tweet.setUserLink(autolink.autoLink('@' + sourceStatus.getUser().getScreenName() +
                     " (" + sourceStatus.getUser().getName() + ")"));
@@ -79,8 +78,7 @@ public class TweetService {
         } else if (status.getQuotedStatus() != null) {
             sourceStatus = status.getQuotedStatus();
             tweet.setQuotedText(autolink.autoLink(status.getText()));
-            tweet.setQuotedBy(autolink.autoLink('@' + status.getUser().getScreenName() +
-                    " (" + status.getUser().getName() + ")") + " Quoted");
+            tweet.setQuotedBy(autolink.autoLink('@' + status.getUser().getScreenName()) + " Quoted");
             tweet.setUser(sourceStatus.getUser().getName());
             tweet.setUserLink(autolink.autoLink('@' + sourceStatus.getUser().getScreenName() +
                     " (" + sourceStatus.getUser().getName() + ")"));
