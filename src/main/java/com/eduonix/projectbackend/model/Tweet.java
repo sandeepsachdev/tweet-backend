@@ -16,6 +16,7 @@ public class Tweet {
     String quotedBy;
     String quotedText;
     String retweetedBy;
+    String profileImage;
 
     public String getTime() {
         return time;
@@ -127,5 +128,13 @@ public class Tweet {
 
     public void setRetweetedBy(String retweetedBy) {
         this.retweetedBy = retweetedBy;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 }

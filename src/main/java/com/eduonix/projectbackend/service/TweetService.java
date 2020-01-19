@@ -61,6 +61,7 @@ public class TweetService {
         tweet.setUser(status.getUser().getName());
         tweet.setUserLink(autolink.autoLink('@' + status.getUser().getScreenName() +
                 " (" + status.getUser().getName() + ")"));
+        tweet.setProfileImage(status.getUser().getMiniProfileImageURLHttps());
 
         tweet.setScreenName(status.getUser().getScreenName());
         //System.out.println(status);
@@ -74,6 +75,7 @@ public class TweetService {
             tweet.setUser(sourceStatus.getUser().getName());
             tweet.setUserLink(autolink.autoLink('@' + sourceStatus.getUser().getScreenName() +
                     " (" + sourceStatus.getUser().getName() + ")"));
+            tweet.setProfileImage(sourceStatus.getUser().getMiniProfileImageURLHttps());
 
         } else if (status.getQuotedStatus() != null) {
             sourceStatus = status.getQuotedStatus();
@@ -82,6 +84,7 @@ public class TweetService {
             tweet.setUser(sourceStatus.getUser().getName());
             tweet.setUserLink(autolink.autoLink('@' + sourceStatus.getUser().getScreenName() +
                     " (" + sourceStatus.getUser().getName() + ")"));
+            tweet.setProfileImage(sourceStatus.getUser().getMiniProfileImageURLHttps());
 
         } else {
             sourceStatus = status;
