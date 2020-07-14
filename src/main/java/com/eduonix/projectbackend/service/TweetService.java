@@ -51,6 +51,25 @@ public class TweetService {
             throw new RuntimeException(e);
         }
 
+        repository.save(new Book("Java"));
+        repository.save(new Book("Node"));
+        repository.save(new Book("Python"));
+
+        System.out.println("\nfindAll()");
+        repository.findAll().forEach(x -> System.out.println(x));
+
+        System.out.println("\nfindById(1L)");
+        repository.findById(1l).ifPresent(x -> System.out.println(x));
+
+        System.out.println("\nfindByName('Node')");
+        repository.findByName("Node").forEach(x -> System.out.println(x));
+
+        printSmhFeed();
+
+        return tweets;
+    }
+
+    private void printSmhFeed() {
         RssReader reader = new RssReader();
         Stream<Item> rssFeed = null;
 
@@ -69,22 +88,6 @@ public class TweetService {
         for (Item item: articles) {
             System.out.println(item.getLink().toString());
         }
-
-        repository.save(new Book("Java"));
-        repository.save(new Book("Node"));
-        repository.save(new Book("Python"));
-
-        System.out.println("\nfindAll()");
-        repository.findAll().forEach(x -> System.out.println(x));
-
-        System.out.println("\nfindById(1L)");
-        repository.findById(1l).ifPresent(x -> System.out.println(x));
-
-        System.out.println("\nfindByName('Node')");
-        repository.findByName("Node").forEach(x -> System.out.println(x));
-
-
-        return tweets;
     }
 
     private List<Tweet>  retrieveTweets(Twitter twitter) throws TwitterException {
