@@ -1,7 +1,10 @@
 package com.eduonix.projectbackend.service;
 
+import com.eduonix.projectbackend.model.Book;
 import com.eduonix.projectbackend.model.Tweet;
+import com.eduonix.projectbackend.repository.BookRepository;
 import com.twitter.twittertext.Autolink;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import twitter4j.*;
@@ -15,8 +18,25 @@ import java.util.TimeZone;
 @Component
 public class TweetService {
 
+    @Autowired
+    private BookRepository repository;
+
     @Cacheable("tweets")
     public List<Tweet> getTweets() {
+
+        repository.save(new Book("Java"));
+        repository.save(new Book("Node"));
+        repository.save(new Book("Python"));
+
+        System.out.println("\nfindAll()");
+        repository.findAll().forEach(x -> System.out.println(x));
+
+        System.out.println("\nfindById(1L)");
+        repository.findById(1l).ifPresent(x -> System.out.println(x));
+
+        System.out.println("\nfindByName('Node')");
+        repository.findByName("Node").forEach(x -> System.out.println(x));
+
 
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true).setTweetModeExtended(true);

@@ -1,7 +1,6 @@
 package com.eduonix.projectbackend.controller;
 
 
-import com.eduonix.projectbackend.model.Task;
 import com.eduonix.projectbackend.model.Tweet;
 import com.eduonix.projectbackend.service.TweetService;
 import org.springframework.beans.factory.annotation.Autowired;
