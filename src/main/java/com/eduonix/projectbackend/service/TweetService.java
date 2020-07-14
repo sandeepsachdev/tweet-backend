@@ -1,7 +1,5 @@
 package com.eduonix.projectbackend.service;
 
-import com.apptastic.rssreader.Item;
-import com.apptastic.rssreader.RssReader;
 import com.eduonix.projectbackend.model.Book;
 import com.eduonix.projectbackend.model.Tweet;
 import com.eduonix.projectbackend.repository.BookRepository;
@@ -12,15 +10,10 @@ import org.springframework.stereotype.Component;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static java.lang.System.exit;
 
 @Component
 public class TweetService {
@@ -64,31 +57,10 @@ public class TweetService {
         System.out.println("\nfindByName('Node')");
         repository.findByName("Node").forEach(x -> System.out.println(x));
 
-        printSmhFeed();
 
         return tweets;
     }
 
-    private void printSmhFeed() {
-        RssReader reader = new RssReader();
-        Stream<Item> rssFeed = null;
-
-        {
-            try {
-                rssFeed = reader.read("https://www.smh.com.au/rss/national/nsw.xml");
-            } catch (IOException e) {
-                e.printStackTrace();
-                exit(0);
-            }
-        }
-
-
-        List<Item> articles = rssFeed.collect(Collectors.toList());
-
-        for (Item item: articles) {
-            System.out.println(item.getLink().toString());
-        }
-    }
 
     private List<Tweet>  retrieveTweets(Twitter twitter) throws TwitterException {
 
