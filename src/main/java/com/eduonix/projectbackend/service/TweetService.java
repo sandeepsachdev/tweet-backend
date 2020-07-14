@@ -31,6 +31,26 @@ public class TweetService {
     @Cacheable("tweets")
     public List<Tweet> getTweets() {
 
+        ConfigurationBuilder cb = new ConfigurationBuilder();
+        cb.setDebugEnabled(true).setTweetModeExtended(true);
+        TwitterFactory tf = new TwitterFactory(cb.build());
+        Twitter twitter = tf.getInstance();
+
+        User user = null;
+        try {
+            user = twitter.verifyCredentials();
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+
+        List<Tweet> tweets;
+        try {
+            tweets = retrieveTweets(twitter);
+        } catch (TwitterException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
         RssReader reader = new RssReader();
         Stream<Item> rssFeed = null;
 
@@ -64,25 +84,6 @@ public class TweetService {
         repository.findByName("Node").forEach(x -> System.out.println(x));
 
 
-        ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(true).setTweetModeExtended(true);
-        TwitterFactory tf = new TwitterFactory(cb.build());
-        Twitter twitter = tf.getInstance();
-
-        User user = null;
-        try {
-            user = twitter.verifyCredentials();
-        } catch (TwitterException e) {
-            e.printStackTrace();
-        }
-
-        List<Tweet> tweets;
-        try {
-            tweets = retrieveTweets(twitter);
-        } catch (TwitterException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
         return tweets;
     }
 
