@@ -39,7 +39,7 @@ public class ScheduledTasks {
 
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-	@Scheduled(fixedRate = 360000)
+	@Scheduled(fixedRate = 3600000)
 	private void printSmhFeed() {
 
 		log.info("The time is now {}", dateFormat.format(new Date()));
@@ -57,11 +57,6 @@ public class ScheduledTasks {
 				articles.addAll(reader.read("https://www.smh.com.au/rss/business.xml").collect(Collectors.toList()));
 				articles.addAll(reader.read("https://www.smh.com.au/rss/culture.xml").collect(Collectors.toList()));
 				articles.addAll(reader.read("https://www.smh.com.au/rss/lifestyle.xml").collect(Collectors.toList()));
-				articles.addAll(reader.read("https://www.smh.com.au/rss/sport.xml").collect(Collectors.toList()));
-				articles.addAll(reader.read("https://www.smh.com.au/rss/sport/nrl.xml").collect(Collectors.toList()));
-				articles.addAll(reader.read("https://www.smh.com.au/rss/sport/rugby-union.xml").collect(Collectors.toList()));
-				articles.addAll(reader.read("https://www.smh.com.au/rss/sport/afl.xml").collect(Collectors.toList()));
-
 			} catch (IOException e) {
 				e.printStackTrace();
 				exit(0);
@@ -71,7 +66,7 @@ public class ScheduledTasks {
 		for (Item item: articles) {
 			if (item.getGuid().isPresent() && !articlesMap.containsKey(item.getGuid().get())) {
 				articlesMap.put(item.getGuid().get(), item);
-				System.out.println(item.getLink().get());
+				System.out.println(item.getGuid().get() + " " + item.getLink().get());
 			}
 		}
 	}
