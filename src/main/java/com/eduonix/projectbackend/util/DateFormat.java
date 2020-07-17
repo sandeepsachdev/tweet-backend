@@ -5,9 +5,10 @@ import java.util.Date;
 
 public class DateFormat {
 
-    private static SimpleDateFormat format =new SimpleDateFormat("HH:mm");
+    public static SimpleDateFormat hourMin
+            =new SimpleDateFormat("HH:mm");
 
     public static String formatDate(Date date) {
-        return format.format(date);
+        return hourMin.format(date);
     }
 }

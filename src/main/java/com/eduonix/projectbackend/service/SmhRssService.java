@@ -18,11 +18,14 @@ package com.eduonix.projectbackend.service;
 
 import com.apptastic.rssreader.Item;
 import com.apptastic.rssreader.RssReader;
-import com.eduonix.projectbackend.model.Tweet;
+import com.eduonix.projectbackend.model.SmhItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -35,16 +38,21 @@ import static java.lang.System.exit;
 @Component
 public class SmhRssService {
 
-    private static final Map<String, Item> articlesMap = new HashMap<String, Item>();
+    @Autowired
+    RestTemplate restTemplate;
+
+    @Value("${newsApiKey}")
+    String newsApiKey;
+
+    private static final Map<String, SmhItem> articlesMap = new HashMap<String, SmhItem>();
     private static final Logger log = LoggerFactory.getLogger(SmhRssService.class);
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-    public List<Item> getRss() {
-        Collection<Item> items = articlesMap.values();
-        List<Item> itemList = new ArrayList<>(items);
-        itemList.sort(Comparator.comparing(o -> o.getPubDateZonedDateTime().get()));
-        itemList.sort(Comparator.reverseOrder());
+    public List<SmhItem> getRss() {
+        Collection<SmhItem> items = articlesMap.values();
+        List<SmhItem> itemList = new ArrayList<>(items);
+        itemList.sort(Comparator.comparing(SmhItem::getPubDateZonedDateTime).reversed());
         return itemList;
     }
 
@@ -52,7 +60,7 @@ public class SmhRssService {
     private void printSmhFeed() {
 
         RssReader reader = new RssReader();
-        Stream<Item> rssFeed = null;
+        Stream<SmhItem> rssFeed = null;
         List<Item> articles = new ArrayList<>();
 
         {
@@ -74,7 +82,7 @@ public class SmhRssService {
         for (Item item : articles) {
             if (item.getGuid().isPresent() && !articlesMap.containsKey(item.getGuid().get())) {
                 if (!item.getLink().get().contains("sport")) {
-                    articlesMap.put(item.getGuid().get(), item);
+                    articlesMap.put(item.getGuid().get(), new SmhItem(item));
                     System.out.println(item.getGuid().get() + " " + item.getLink().get());
                 }
 

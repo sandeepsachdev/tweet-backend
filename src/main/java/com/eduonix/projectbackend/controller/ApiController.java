@@ -4,6 +4,7 @@ package com.eduonix.projectbackend.controller;
 import com.apptastic.rssreader.Item;
 import com.eduonix.projectbackend.model.Article;
 import com.eduonix.projectbackend.model.Response;
+import com.eduonix.projectbackend.model.SmhItem;
 import com.eduonix.projectbackend.model.Tweet;
 import com.eduonix.projectbackend.service.SmhRssService;
 import com.eduonix.projectbackend.service.TweetService;
@@ -43,7 +44,7 @@ public class ApiController {
 	}
 
 	@RequestMapping(value="/getSmhRss",produces="application/json")
-	public List<Item> getSmhRss() {
+	public List<SmhItem> getSmhRss() {
 		return smhRssService.getRss();
 	}
 
