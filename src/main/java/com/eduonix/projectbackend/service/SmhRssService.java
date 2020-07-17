@@ -73,8 +73,11 @@ public class SmhRssService {
 
         for (Item item : articles) {
             if (item.getGuid().isPresent() && !articlesMap.containsKey(item.getGuid().get())) {
-                articlesMap.put(item.getGuid().get(), item);
-                System.out.println(item.getGuid().get() + " " + item.getLink().get());
+                if (!item.getLink().get().contains("sport")) {
+                    articlesMap.put(item.getGuid().get(), item);
+                    System.out.println(item.getGuid().get() + " " + item.getLink().get());
+                }
+
             }
         }
 
