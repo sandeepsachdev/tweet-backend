@@ -50,7 +50,7 @@ public class ApiController {
 	@RequestMapping(value="/getNewsApiRss",produces="application/json")
 	public List<Article> getNewsApiRss() {
 		return restTemplate.getForObject(
-				"http://newsapi.org/v2/top-headlines?country=AU&apiKey=" + newsApiKey, Response.class).getArticles();
+				"http://newsapi.org/v2/everything?q=covid&apiKey=" + newsApiKey, Response.class).getArticles();
 	}
 
 }
