@@ -1,6 +1,9 @@
 package com.eduonix.projectbackend.model;
 
+import com.eduonix.projectbackend.util.DateFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.util.Date;
 
 public class Article {
 
@@ -9,10 +12,12 @@ public class Article {
     private String description;
     private String url;
     private String urlToImage;
-    private String publishedAt;
+    private Date publishedAt;
     private String content;
 
     public Article() {
+
+
     }
 
     public String getTitle() {
@@ -48,10 +53,10 @@ public class Article {
     }
 
     public String getPublishedAt() {
-        return publishedAt;
+        return DateFormat.formatDate(publishedAt);
     }
 
-    public void setPublishedAt(String publishedAt) {
+    public void setPublishedAt(Date publishedAt) {
         this.publishedAt = publishedAt;
     }
 
