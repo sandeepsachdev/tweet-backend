@@ -30,9 +30,6 @@ public class ApiController {
 	@Autowired
 	SmhRssService smhRssService;
 
-	@Autowired
-	RestTemplate restTemplate;
-
 	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder builder) {
 		return builder.build();
@@ -50,9 +47,7 @@ public class ApiController {
 
 	@RequestMapping(value="/getNewsApiRss",produces="application/json")
 	public List<Article> getNewsApiRss() {
-		return restTemplate.getForObject(
-//				"http://newsapi.org/v2/everything?pageSize=100&language=en&sortBy=publishedAt&q=covid&from=2020-07-16&apiKey=" + newsApiKey, Response.class).getArticles();
-				"http://newsapi.org/v2/top-headlines?country=us&pageSize=100&category=general&apiKey=" + newsApiKey, Response.class).getArticles();
+		return smhRssService.getNewsApiRss();
 	}
 
 }
