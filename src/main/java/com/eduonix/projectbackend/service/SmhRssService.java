@@ -54,7 +54,8 @@ public class SmhRssService {
     public List<Article> getNewsApiRss() {
         return restTemplate.getForObject(
 //				"http://newsapi.org/v2/everything?pageSize=100&language=en&sortBy=publishedAt&q=covid&from=2020-07-16&apiKey=" + newsApiKey, Response.class).getArticles();
-                "http://newsapi.org/v2/top-headlines?country=us&pageSize=100&category=general&apiKey=" + newsApiKey, Response.class).getArticles();
+//                "http://newsapi.org/v2/top-headlines?country=us&pageSize=100&category=general&apiKey=" + newsApiKey, Response.class).getArticles();
+                "http://newsapi.org/v2/top-headlines?lanuage=en&pageSize=100&sources=abc-news-au,ars-technica,engadget,bbc-news,cbc-news,cbs-news,cnn,google-news,nbc-news,newsweek,reuters,the-washington-post,&apiKey=" + newsApiKey, Response.class).getArticles();
     }
 
 
