@@ -34,11 +34,6 @@ public class ApiController {
 	@Autowired
 	TweetTrendService tweetTrendService;
 
-	@Bean
-	public RestTemplate restTemplate(RestTemplateBuilder builder) {
-		return builder.build();
-	}
-
 	@RequestMapping(value="/getTweets",produces="application/json")
 	public List<Tweet> getTweets() {
 		return tweetService.getTweets();
