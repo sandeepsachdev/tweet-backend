@@ -32,7 +32,7 @@ public class TweetTrendService {
         return itemList;
     }
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 120000)
     private void getTrends() {
 
         log.info("The time is now {}", dateFormat.format(new Date()));
@@ -51,6 +51,7 @@ public class TweetTrendService {
         Trend[] trendList = trends.getTrends();
         for (Trend trend : trendList) {
             if (!tweetTrendMap.containsKey(trend.getName().toUpperCase())) {
+                log.info("New Trend{}", trend.getName());
                 TweetTrend tweetTrend = new TweetTrend(
                         dateFormat.format(new Date()),
                         new Date(),
