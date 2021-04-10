@@ -56,8 +56,7 @@ public class ApiController {
 
 	@RequestMapping(value="/getNewsApiRss",produces="application/json")
 	public List<Article> getNewsApiRss() {
-		return restTemplate.getForObject(
-				"http://newsapi.org/v2/everything?pageSize=100&language=en&sortBy=publishedAt&q=covid&from=2020-07-16&apiKey=" + newsApiKey, Response.class).getArticles();
+		return smhRssService.getNewsApiRss();
 	}
 
 }

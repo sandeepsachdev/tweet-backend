@@ -18,6 +18,8 @@ package com.eduonix.projectbackend.service;
 
 import com.apptastic.rssreader.Item;
 import com.apptastic.rssreader.RssReader;
+import com.eduonix.projectbackend.model.Article;
+import com.eduonix.projectbackend.model.Response;
 import com.eduonix.projectbackend.model.SmhItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +50,14 @@ public class SmhRssService {
     private static final Logger log = LoggerFactory.getLogger(SmhRssService.class);
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
+    public List<Article> getNewsApiRss() {
+        return restTemplate.getForObject(
+//				"http://newsapi.org/v2/everything?pageSize=100&language=en&sortBy=publishedAt&q=covid&from=2020-07-16&apiKey=" + newsApiKey, Response.class).getArticles();
+//                "http://newsapi.org/v2/top-headlines?country=us&pageSize=100&category=general&apiKey=" + newsApiKey, Response.class).getArticles();
+                "http://newsapi.org/v2/top-headlines?lanuage=en&pageSize=100&sources=axios,abc-news-au,fox-news,buzzfeed,hacker-news,mashable,ars-technica,engadget,recode,techcrunch,bbc-news,cbc-news,cbs-news,cnn,nbc-news,the-irish-times,the-huffington-post,google-news,wired,nbc-news,newsweek,reuters,the-washington-post,&apiKey=" + newsApiKey, Response.class).getArticles();
+    }
+
 
     public List<SmhItem> getRss() {
         Collection<SmhItem> items = articlesMap.values();
