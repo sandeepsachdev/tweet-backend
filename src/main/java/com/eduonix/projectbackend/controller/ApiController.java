@@ -2,12 +2,10 @@ package com.eduonix.projectbackend.controller;
 
 
 import com.apptastic.rssreader.Item;
-import com.eduonix.projectbackend.model.Article;
-import com.eduonix.projectbackend.model.Response;
-import com.eduonix.projectbackend.model.SmhItem;
-import com.eduonix.projectbackend.model.Tweet;
+import com.eduonix.projectbackend.model.*;
 import com.eduonix.projectbackend.service.SmhRssService;
 import com.eduonix.projectbackend.service.TweetService;
+import com.eduonix.projectbackend.service.TweetTrendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -33,6 +31,9 @@ public class ApiController {
 	@Autowired
 	RestTemplate restTemplate;
 
+	@Autowired
+	TweetTrendService tweetTrendService;
+
 	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder builder) {
 		return builder.build();
@@ -41,6 +42,11 @@ public class ApiController {
 	@RequestMapping(value="/getTweets",produces="application/json")
 	public List<Tweet> getTweets() {
 		return tweetService.getTweets();
+	}
+
+	@RequestMapping(value="/getTweetTrends",produces="application/json")
+	public List<TweetTrend> getTweetTrends() {
+		return tweetTrendService.getTweetTrends();
 	}
 
 	@RequestMapping(value="/getSmhRss",produces="application/json")
