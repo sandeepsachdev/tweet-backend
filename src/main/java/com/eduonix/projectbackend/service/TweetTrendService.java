@@ -22,7 +22,7 @@ import java.util.TimeZone;
 public class TweetTrendService {
 
     private static final Map<String, TweetTrend> tweetTrendMap = new HashMap<String, TweetTrend>();
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM HH:mm:ss");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("E HH:mm:ss");
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(TweetTrendService.class);
 
     public List<TweetTrend> getTweetTrends() {
@@ -51,7 +51,7 @@ public class TweetTrendService {
         Trend[] trendList = trends.getTrends();
         for (Trend trend : trendList) {
             if (!tweetTrendMap.containsKey(trend.getName().toUpperCase())) {
-                log.info("New Trend{}", trend.getName());
+                log.info("New Trend {}", trend.getName());
                 TweetTrend tweetTrend = new TweetTrend(
                         dateFormat.format(new Date()),
                         new Date(),
