@@ -32,7 +32,7 @@ public class TweetTrendService {
         return itemList;
     }
 
-    @Scheduled(fixedRate = 120000)
+    @Scheduled(fixedRate = 15000)
     private void getTrends() {
 
         log.info("The time is now {}", dateFormat.format(new Date()));
