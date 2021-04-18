@@ -13,7 +13,7 @@ public class SmhItem {
 
     public SmhItem(Item item) {
         this.title = item.getTitle().get();
-        this.description = item.getDescription().get();
+        this.description = item.getDescription().isPresent() ? item.getDescription().get() : "";
         this.link = item.getLink().get();
         this.pubDateZonedDateTime = item.getPubDateZonedDateTime().get();
         this.pubDate = pubDateZonedDateTime.format(DateTimeFormatter.ofPattern("HH:mm"));
