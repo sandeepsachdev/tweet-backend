@@ -51,7 +51,7 @@ public class TweetTrendService {
                 log.info("New Trend {}", trend.getName());
                 TweetTrend tweetTrend = new TweetTrend(
                         dateFormat.format(date),
-                        new Date(),
+                        date,
                         dateFormat.format(date),
                         Integer.toString(trend.getTweetVolume()),
                         trend.getName(),
