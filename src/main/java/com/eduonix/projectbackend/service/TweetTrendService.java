@@ -14,11 +14,10 @@ import java.util.*;
 public class TweetTrendService {
 
     private static final Map<String, TweetTrend> tweetTrendMap = new HashMap<>();
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("E:HH:mmz");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("E:HH:mm");
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(TweetTrendService.class);
 
     private final java.util.TimeZone tz = java.util.TimeZone.getTimeZone("GMT+10");
-    private final java.util.Calendar c = java.util.Calendar.getInstance(tz);
 
     public List<TweetTrend> getTweetTrends() {
         Collection<TweetTrend> tweetTrends = tweetTrendMap.values();
@@ -30,7 +29,7 @@ public class TweetTrendService {
     @Scheduled(fixedRate = 15000)
     private void getTrends() {
 
-        Date date = c.getTime();
+        Date date = new Date();
         dateFormat.setTimeZone(tz);
 
         log.info("The time is now {}", dateFormat.format(date));
