@@ -31,6 +31,7 @@ public class TweetTrendService {
     private void getTrends() {
 
         Date date = c.getTime();
+        dateFormat.setTimeZone(tz);
 
         log.info("The time is now {}", dateFormat.format(date));
         ConfigurationBuilder cb = new ConfigurationBuilder();
