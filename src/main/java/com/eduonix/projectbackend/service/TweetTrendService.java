@@ -1,14 +1,7 @@
 package com.eduonix.projectbackend.service;
 
-import com.eduonix.projectbackend.model.Book;
-import com.eduonix.projectbackend.model.SmhItem;
-import com.eduonix.projectbackend.model.Tweet;
 import com.eduonix.projectbackend.model.TweetTrend;
-import com.eduonix.projectbackend.repository.BookRepository;
-import com.twitter.twittertext.Autolink;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import twitter4j.*;
@@ -16,14 +9,16 @@ import twitter4j.conf.ConfigurationBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.TimeZone;
 
 @Component
 public class TweetTrendService {
 
-    private static final Map<String, TweetTrend> tweetTrendMap = new HashMap<String, TweetTrend>();
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("E:HH:mm");
+    private static final Map<String, TweetTrend> tweetTrendMap = new HashMap<>();
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("E:HH:mmz");
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(TweetTrendService.class);
+
+    private final java.util.TimeZone tz = java.util.TimeZone.getTimeZone("GMT+10");
+    private final java.util.Calendar c = java.util.Calendar.getInstance(tz);
 
     public List<TweetTrend> getTweetTrends() {
         Collection<TweetTrend> tweetTrends = tweetTrendMap.values();
@@ -35,13 +30,15 @@ public class TweetTrendService {
     @Scheduled(fixedRate = 15000)
     private void getTrends() {
 
-        log.info("The time is now {}", dateFormat.format(new Date()));
+        Date date = c.getTime();
+
+        log.info("The time is now {}", dateFormat.format(date));
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true).setTweetModeExtended(true);
         TwitterFactory tf = new TwitterFactory(cb.build());
         Twitter twitter = tf.getInstance();
 
-        Trends trends = null;
+        Trends trends;
         try {
             trends = twitter.getPlaceTrends(1105779);
         } catch (TwitterException e) {
@@ -53,9 +50,9 @@ public class TweetTrendService {
             if (!tweetTrendMap.containsKey(trend.getName().toUpperCase())) {
                 log.info("New Trend {}", trend.getName());
                 TweetTrend tweetTrend = new TweetTrend(
-                        dateFormat.format(new Date()),
+                        dateFormat.format(date),
                         new Date(),
-                        dateFormat.format(new Date()),
+                        dateFormat.format(date),
                         Integer.toString(trend.getTweetVolume()),
                         trend.getName(),
                         trend.getURL());
