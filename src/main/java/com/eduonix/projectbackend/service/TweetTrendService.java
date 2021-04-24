@@ -65,7 +65,7 @@ public class TweetTrendService {
                 if (queryResult.getTweets().size() > 0) {
                     Status status = queryResult.getTweets().get(0);
                     text = status.getText();
-                    text =  String.format("RT/FAV(%s/%s) %s", status.getRetweetCount(), status.getFavoriteCount(), text);
+                    text =  String.format("%s RT/FAV(%s/%s) %s", status.getUser().getName(), status.getRetweetCount(), status.getFavoriteCount(), text);
                 }
 
                 log.info("New Trend {} \ntweet{}", trend.getName(), text);
