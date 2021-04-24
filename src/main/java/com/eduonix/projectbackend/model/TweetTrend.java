@@ -11,8 +11,10 @@ public class TweetTrend {
     String name;
     String url;
     String tweetText;
+    String tweetText2;
 
-    public TweetTrend(String timeFirstSeen, Date dateFirstSeen, String timelastSeen, String count, String name, String url, String tweetText) {
+    public TweetTrend(String timeFirstSeen, Date dateFirstSeen, String timelastSeen, String count, String name, String url,
+                      String tweetText, String tweetText2) {
         this.timeFirstSeen = timeFirstSeen;
         this.dateFirstSeen = dateFirstSeen;
         this.timelastSeen = timelastSeen;
@@ -20,6 +22,7 @@ public class TweetTrend {
         this.name = name;
         this.url = url;
         this.tweetText = tweetText;
+        this.tweetText2 = tweetText2;
     }
 
     public String getTimeFirstSeen() {
@@ -76,5 +79,13 @@ public class TweetTrend {
 
     public void setTweetText(String tweetText) {
         this.tweetText = tweetText;
+    }
+
+    public String getTweetText2() {
+        return tweetText2;
+    }
+
+    public void setTweetText2(String tweetText2) {
+        this.tweetText2 = tweetText2;
     }
 }

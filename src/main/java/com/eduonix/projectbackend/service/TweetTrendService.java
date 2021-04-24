@@ -10,6 +10,8 @@ import twitter4j.conf.ConfigurationBuilder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static twitter4j.Query.ResultType.popular;
+
 @Component
 public class TweetTrendService {
 
@@ -51,7 +53,9 @@ public class TweetTrendService {
 
                 QueryResult queryResult = null;
                 try {
-                    queryResult = twitter.search(new Query(trend.getName()));
+                    Query query = new Query(trend.getName());
+                    query.setResultType(popular);
+                    queryResult = twitter.search(query);
                 } catch (TwitterException e) {
                     e.printStackTrace();
                 }
@@ -67,7 +71,8 @@ public class TweetTrendService {
                         Integer.toString(trend.getTweetVolume()),
                         trend.getName(),
                         trend.getURL(),
-                        queryResult.getTweets().get(0).getText());
+                        queryResult.getTweets().get(0).getText(),
+                        queryResult.getTweets().get(1).getText());
 
                 tweetTrendMap.put(trend.getName().toUpperCase(), tweetTrend);
             }
