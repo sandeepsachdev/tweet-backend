@@ -54,13 +54,19 @@ public class TweetTrendService {
                 QueryResult queryResult = null;
                 try {
                     Query query = new Query(trend.getName());
-                    //query.setResultType(popular);
+                    query.setResultType(popular);
                     queryResult = twitter.search(query);
                 } catch (TwitterException e) {
                     e.printStackTrace();
                 }
-                Status tweet = queryResult.getTweets().get(0);
-                log.info("New Trend {} \ntweet{}", trend.getName(), tweet.getText());
+
+                String text = "No tweet found";
+                if (queryResult.getTweets().size() > 0) {
+                    Status tweet = queryResult.getTweets().get(0);
+                    text = queryResult.getTweets().get(0).getText();
+                }
+
+                log.info("New Trend {} \ntweet{}", trend.getName(), text);
 
 
 
@@ -72,7 +78,7 @@ public class TweetTrendService {
                         Integer.toString(trend.getTweetVolume()),
                         trend.getName(),
                         trend.getURL(),
-                        tweet.getText(),
+                        text,
                         queryResult.getTweets().size() > 1 ? queryResult.getTweets().get(1).getText() : "");
 
                 tweetTrendMap.put(trend.getName().toUpperCase(), tweetTrend);
