@@ -55,6 +55,7 @@ public class TweetTrendService {
                 try {
                     Query query = new Query(trend.getName());
                     query.setResultType(popular);
+                    query.setLang("en");
                     queryResult = twitter.search(query);
                 } catch (TwitterException e) {
                     e.printStackTrace();
@@ -62,8 +63,9 @@ public class TweetTrendService {
 
                 String text = "No tweet found";
                 if (queryResult.getTweets().size() > 0) {
-                    Status tweet = queryResult.getTweets().get(0);
-                    text = queryResult.getTweets().get(0).getText();
+                    Status status = queryResult.getTweets().get(0);
+                    text = status.getText();
+                    text =  String.format("RT/FAV(%s/%s) %s", status.getRetweetCount(), status.getFavoriteCount(), text);
                 }
 
                 log.info("New Trend {} \ntweet{}", trend.getName(), text);
