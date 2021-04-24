@@ -10,14 +10,16 @@ public class TweetTrend {
     String count;
     String name;
     String url;
+    String tweetText;
 
-    public TweetTrend(String timeFirstSeen, Date dateFirstSeen, String timelastSeen, String count, String name, String url) {
+    public TweetTrend(String timeFirstSeen, Date dateFirstSeen, String timelastSeen, String count, String name, String url, String tweetText) {
         this.timeFirstSeen = timeFirstSeen;
         this.dateFirstSeen = dateFirstSeen;
         this.timelastSeen = timelastSeen;
         this.count = count;
         this.name = name;
         this.url = url;
+        this.tweetText = tweetText;
     }
 
     public String getTimeFirstSeen() {

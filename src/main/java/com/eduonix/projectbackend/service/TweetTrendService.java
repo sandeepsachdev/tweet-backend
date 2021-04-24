@@ -48,14 +48,26 @@ public class TweetTrendService {
         Trend[] trendList = trends.getTrends();
         for (Trend trend : trendList) {
             if (!tweetTrendMap.containsKey(trend.getName().toUpperCase())) {
-                log.info("New Trend {}", trend.getName());
+
+                QueryResult queryResult = null;
+                try {
+                    queryResult = twitter.search(new Query(trend.getName()));
+                } catch (TwitterException e) {
+                    e.printStackTrace();
+                }
+                log.info("New Trend {} \ntweet{}", trend.getName(), queryResult.getTweets().get(0).getText());
+
+
+
+
                 TweetTrend tweetTrend = new TweetTrend(
                         dateFormat.format(date),
                         date,
                         dateFormat.format(date),
                         Integer.toString(trend.getTweetVolume()),
                         trend.getName(),
-                        trend.getURL());
+                        trend.getURL(),
+                        queryResult.getTweets().get(0).getText());
 
                 tweetTrendMap.put(trend.getName().toUpperCase(), tweetTrend);
             }

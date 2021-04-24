@@ -93,7 +93,7 @@ public class SmhRssService {
             if (item.getGuid().isPresent() && !articlesMap.containsKey(item.getGuid().get())) {
                 if (!item.getLink().get().contains("sport")) {
                     articlesMap.put(item.getGuid().get(), new SmhItem(item));
-                    System.out.println(item.getGuid().get() + " " + item.getLink().get());
+                    //System.out.println(item.getGuid().get() + " " + item.getLink().get());
                 }
 
             }
