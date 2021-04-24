@@ -69,4 +69,12 @@ public class TweetTrend {
     public void setDateFirstSeen(Date dateFirstSeen) {
         this.dateFirstSeen = dateFirstSeen;
     }
+
+    public String getTweetText() {
+        return tweetText;
+    }
+
+    public void setTweetText(String tweetText) {
+        this.tweetText = tweetText;
+    }
 }
