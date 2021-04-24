@@ -72,7 +72,7 @@ public class TweetTrendService {
                         trend.getName(),
                         trend.getURL(),
                         queryResult.getTweets().get(0).getText(),
-                        queryResult.getTweets().get(1).getText());
+                        queryResult.getTweets().size() > 1 ? queryResult.getTweets().get(1).getText() : "");
 
                 tweetTrendMap.put(trend.getName().toUpperCase(), tweetTrend);
             }
