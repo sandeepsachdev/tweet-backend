@@ -61,9 +61,20 @@ public class TweetTrendService {
                     e.printStackTrace();
                 }
 
+                if (queryResult.getTweets() != null && queryResult.getTweets().size() ==0) {
+                    try {
+                        Query query = new Query(trend.getName());
+                        query.setResultType(Query.ResultType.mixed);
+                        query.setLang("en");
+                        queryResult = twitter.search(query);
+                    } catch (TwitterException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 String text = "No tweet found";
                 String text2 = "";
-                if (queryResult.getTweets().size() > 0) {
+                if (queryResult.getTweets() != null && queryResult.getTweets().size() > 0) {
                     Status status = queryResult.getTweets().get(0);
                     text = status.getText();
                     text =  String.format("%s RT/FAV(%s/%s) %s", status.getUser().getName(), status.getRetweetCount(), status.getFavoriteCount(), text);
