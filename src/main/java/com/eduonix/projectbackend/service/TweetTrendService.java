@@ -61,7 +61,10 @@ public class TweetTrendService {
                     e.printStackTrace();
                 }
 
-                if (queryResult.getTweets() != null && queryResult.getTweets().size() ==0) {
+                if ((queryResult != null && queryResult.getTweets() != null) &&
+                        ((queryResult.getTweets().size() == 0) ||
+                                        (queryResult.getTweets().get(0).getUser().getLocation() != null &&
+                                                !queryResult.getTweets().get(0).getUser().getLocation().equals("Australia")))) {
                     try {
                         Query query = new Query(trend.getName());
                         query.setResultType(Query.ResultType.mixed);
@@ -74,21 +77,19 @@ public class TweetTrendService {
 
                 String text = "No tweet found";
                 String text2 = "";
-                if (queryResult.getTweets() != null && queryResult.getTweets().size() > 0) {
+                if ((queryResult != null) && queryResult.getTweets() != null && queryResult.getTweets().size() > 0) {
                     Status status = queryResult.getTweets().get(0);
                     text = status.getText();
-                    text =  String.format("%s RT/FAV(%s/%s) %s", status.getUser().getName(), status.getRetweetCount(), status.getFavoriteCount(), text);
+                    text = String.format("%s RT/FAV(%s/%s) %s", status.getUser().getName(), status.getRetweetCount(), status.getFavoriteCount(), text);
                 }
 
-                if (queryResult.getTweets().size() > 1) {
+                if ((queryResult != null) && queryResult.getTweets() != null && queryResult.getTweets().size() > 1) {
                     Status status = queryResult.getTweets().get(1);
                     text2 = status.getText();
-                    text2 =  String.format("%s RT/FAV(%s/%s) %s", status.getUser().getName(), status.getRetweetCount(), status.getFavoriteCount(), text2);
+                    text2 = String.format("%s RT/FAV(%s/%s) %s", status.getUser().getName(), status.getRetweetCount(), status.getFavoriteCount(), text2);
                 }
 
                 log.info("New Trend {} \ntweet{}", trend.getName(), text);
-
-
 
 
                 TweetTrend tweetTrend = new TweetTrend(
