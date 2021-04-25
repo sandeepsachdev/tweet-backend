@@ -62,10 +62,17 @@ public class TweetTrendService {
                 }
 
                 String text = "No tweet found";
+                String text2 = "";
                 if (queryResult.getTweets().size() > 0) {
                     Status status = queryResult.getTweets().get(0);
                     text = status.getText();
                     text =  String.format("%s RT/FAV(%s/%s) %s", status.getUser().getName(), status.getRetweetCount(), status.getFavoriteCount(), text);
+                }
+
+                if (queryResult.getTweets().size() > 1) {
+                    Status status = queryResult.getTweets().get(1);
+                    text2 = status.getText();
+                    text2 =  String.format("%s RT/FAV(%s/%s) %s", status.getUser().getName(), status.getRetweetCount(), status.getFavoriteCount(), text2);
                 }
 
                 log.info("New Trend {} \ntweet{}", trend.getName(), text);
@@ -81,7 +88,7 @@ public class TweetTrendService {
                         trend.getName(),
                         trend.getURL(),
                         text,
-                        queryResult.getTweets().size() > 1 ? queryResult.getTweets().get(1).getText() : "");
+                        text2);
 
                 tweetTrendMap.put(trend.getName().toUpperCase(), tweetTrend);
             }
