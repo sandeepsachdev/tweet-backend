@@ -53,7 +53,7 @@ public class TweetTrendService {
 
                 QueryResult queryResult = null;
                 try {
-                    Query query = new Query(trend.getName());
+                    Query query = new Query("\"" + trend.getName() + "\"");
                     query.setResultType(popular);
                     query.setLang("en");
                     queryResult = twitter.search(query);
